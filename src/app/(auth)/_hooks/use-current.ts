@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { client } from "@/lib/rpc";
+import { IUser } from "@/models/User";
 
 export const useCurrent = () => {
   const query = useQuery({
@@ -12,7 +13,7 @@ export const useCurrent = () => {
       }
 
       const { data } = await response.json();
-      return data;
+      return data as unknown as IUser;
     },
   });
   return query;

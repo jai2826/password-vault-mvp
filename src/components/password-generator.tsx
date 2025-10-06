@@ -6,8 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Copy, RefreshCw, Lock } from "lucide-react";
+import { DottedSeparator } from "@/components/dotted-separator";
+import { usePasswordStore } from "@/store/usePassword";
+import Link from "next/link";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { useParams, usePathname } from "next/navigation";
+import path from "path";
 
 interface GeneratorOptions {
   length: number;
@@ -26,11 +39,13 @@ const initialOptions: GeneratorOptions = {
 };
 
 export default function PasswordGenerator() {
+  const pathname = usePathname();
   const [password, setPassword] = useState("P@sswordG3n3rat0r"); // Placeholder
   const [options, setOptions] = useState<GeneratorOptions>(initialOptions);
   const [copied, setCopied] = useState(false);
+  const { setMainPassword } = usePasswordStore();
 
-  // Simple password generator logic
+  // Password generation logic
   const generateStrongPassword = (options: GeneratorOptions): void => {
     console.log("Generating password with options:", options);
     // Character sets
@@ -82,12 +97,6 @@ export default function PasswordGenerator() {
     }
     setPassword(passwordArr.join(""));
   };
-  //   const generatePassword = () => {
-  //     console.log("Generating password with options:", options);
-  //     const newPass =
-  //       Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-  //     setPassword(newPass.slice(0, options.length));
-  //   };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(password);
@@ -98,6 +107,7 @@ export default function PasswordGenerator() {
       navigator.clipboard.writeText(""); // Overwrite with empty string
       setCopied(false);
     }, 15000); // 15 seconds
+    toast.success("Copied! Will auto-clear in 15 seconds.");
   };
 
   const handleOptionChange = (
@@ -107,21 +117,43 @@ export default function PasswordGenerator() {
     setOptions((prev) => ({ ...prev, [key]: value as any }));
   };
 
+  const handleUsePassword = () => {
+    setMainPassword(password);
+    toast.success("Password set for Sign Up form");
+  };
+  const handleRemovePassword = () => {
+    setMainPassword("");
+    toast.success("Password removed from Sign Up form");
+  };
+
   React.useEffect(() => {
     generateStrongPassword(options);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader>
-        <CardTitle className="flex items-center text-primary">
-          <Lock className="w-5 h-5 mr-2" /> Strong Password Generator
+    <Card
+      className={cn(
+        "w-full lg:w-[487px] md:w-[600px] border-none shadow-none "
+      )}
+    >
+      <CardHeader className="flex flex-col items-center justify-center text-center p-7">
+        <CardTitle className="flex items-center text-primary text-2xl">
+          Strong Password Generator
         </CardTitle>
+        <CardDescription>
+          To Generate a strong pasword refer to
+          <Link href={"/readme"}>
+            <span className="text-blue-700"> Readme File</span>
+          </Link>{" "}
+        </CardDescription>
       </CardHeader>
-      <CardContent>
+      <div className="px-7 mb-2">
+        <DottedSeparator />
+      </div>
+      <CardContent className="p-7">
         {/* Generated Password Display */}
-        <div className="flex items-center space-x-2 mb-6">
+        <div className="flex items-center space-x-2 mb-6 p-0 md:p-7  lg:p-0 lg:py-2">
           <Input
             type="text"
             readOnly
@@ -145,14 +177,13 @@ export default function PasswordGenerator() {
             <Copy className="w-4 h-4" />
           </Button>
         </div>
-        {copied && (
-          <p className="text-sm text-green-600 mb-4">
-            Copied! Will auto-clear in 15 seconds.
-          </p>
-        )}
+
+        <div className="mb-2 py-7">
+          <DottedSeparator />
+        </div>
 
         {/* Options */}
-        <div className="space-y-6">
+        <div className="space-y-6 py-7 md:p-7 lg:p-0 mb-6 ">
           {/* Length Slider */}
           <div>
             <div className="flex justify-between items-center mb-2">
@@ -199,6 +230,25 @@ export default function PasswordGenerator() {
               }
             />
           </div>
+          {pathname === "/sign-up" && (
+            <div className="flex mt-4">
+              <Button
+                onClick={handleUsePassword}
+                size={"lg"}
+                className="flex-1"
+              >
+                Use this password
+              </Button>
+              <Button
+                onClick={handleRemovePassword}
+                size={"lg"}
+                className="flex-1 "
+                variant="destructive"
+              >
+                Remove this password
+              </Button>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

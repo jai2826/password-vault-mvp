@@ -19,10 +19,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/routes/schemas";
 import Link from "next/link";
+import { usePasswordStore } from "@/store/usePassword";
 
 export const SignInCard = () => {
   const { mutate, isPending } = useLogin();
-
+  const generatedStrongPassword = usePasswordStore(
+    (state) => state.generatedStrongPassword
+  );
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -36,11 +39,11 @@ export const SignInCard = () => {
   };
 
   return (
-    <Card className="w-full h-full md:w-[487px] border-none shadow-none">
+    <Card className="w-full h-full lg:w-[487px] md:w-[600px] border-none shadow-none">
       <CardHeader className="flex items-center justify-center text-center p-7">
         <CardTitle className="text-2xl">Welcome back!</CardTitle>
       </CardHeader>
-      <div className="px-7 mb2">
+      <div className="px-7 mb-2">
         <DottedSeparator />
       </div>
       <CardContent className="p-7">
@@ -87,35 +90,8 @@ export const SignInCard = () => {
       <div className="px-7">
         <DottedSeparator />
       </div>
-      {/* <CardContent>
-        <Button
-          onClick={() => signUpWithGoogle()}
-          disabled={isPending}
-          variant={"secondary"}
-          size={"lg"}
-          className="w-full"
-        >
-          <FcGoogle className="mr-2 size-5" />
-          Login with Google
-        </Button>
-        <Button
-          onClick={() => signUpWithGithub()}
-          disabled={isPending}
-          variant={"secondary"}
-          size={"lg"}
-          className="w-full"
-        >
-          <FaGithub className="mr-2 size-5" />
-          Login with Github
-        </Button>
-      </CardContent>
-      <div className="px-7">
-        <DottedSeparator />
-      </div> */}
-      <CardContent
-        className="p-7 flex items-center justify-center
-      "
-      >
+
+      <CardContent className="p-7 flex items-center justify-center    ">
         <p>
           Don&apos;t have an account?
           <Link href={"/sign-up"}>
