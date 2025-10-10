@@ -11,7 +11,6 @@ if (!MONGODB_URI) {
  * Cached connection for MongoDB.
  */
 declare global {
-  // eslint-disable-next-line no-var
   var mongoose:
     | { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null }
     | undefined;

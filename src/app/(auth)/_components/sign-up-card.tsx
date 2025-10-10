@@ -7,7 +7,7 @@ import { z } from "zod";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 
-import { useRegister } from "@/app/(auth)/_hooks/use-register";
+import { useRegister } from "@/app/(auth)/_hooks/use-register"
 import {
   Card,
   CardContent,
@@ -24,13 +24,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { registerSchema } from "@/routes/schemas";
-import Link from "next/link";
 import { usePasswordStore } from "@/store/usePassword";
-import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export const SignUpCard = () => {
-  const { mutate } = useRegister();
+  const { mutate, isPending: isRegistering } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const generatedStrongPassword = usePasswordStore(
     (state) => state.generatedStrongPassword
@@ -54,7 +54,7 @@ export const SignUpCard = () => {
       shouldValidate: true, // Optionally re-run validation
       shouldDirty: true, // Mark the field as changed
     });
-  }, [generatedStrongPassword]);
+  }, [generatedStrongPassword, form]);
   return (
     <Card className="w-full md:w-[600px] lg:w-[487px] border-none shadow-none">
       <CardHeader className="flex flex-col items-center justify-center text-center p-7">
@@ -140,7 +140,7 @@ export const SignUpCard = () => {
                 </FormItem>
               )}
             />
-            <Button disabled={false} size={"lg"} className="w-full">
+            <Button disabled={isRegistering} size={"lg"} className="w-full">
               Register
             </Button>
           </form>

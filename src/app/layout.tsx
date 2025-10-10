@@ -1,9 +1,11 @@
-import { QueryProviders } from "@/components/query-provider";
+import { QueryProviders } from "@/providers/query-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-
+import { ThemeProviders } from "@/providers/theme-provider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+export const dynamic = "force-dynamic";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,14 +27,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted`}
-      ><QueryProviders>
-        <Toaster/>
-        {children}
-      </QueryProviders>
-      
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <ThemeProviders>
+          <div className="bg-muted">
+            <QueryProviders>
+              <Toaster />
+              <NuqsAdapter>{children}</NuqsAdapter>
+            </QueryProviders>
+          </div>
+        </ThemeProviders>
       </body>
     </html>
   );

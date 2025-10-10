@@ -1,3 +1,4 @@
+import { EditTaskModal } from "@/app/(dashboard)/(item)/_components/edit-item-modal";
 import { Navbar } from "@/components/navbar";
 
 interface DashboardLayoutProps {
@@ -10,8 +11,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div className="flex w-full h-full">
         <div className="mx-auto w-full">
           <div className="mx-auto max-w-screen-2xl h-full">
+            <EditTaskModal/>
             <Navbar />
-            <main className="h-full py-8 px-6 flex flex-col md:w-[800px] mx-auto">
+            <main className="flex flex-col items-center justify-center pt-4 md:pt-14">
               {children}
             </main>
           </div>

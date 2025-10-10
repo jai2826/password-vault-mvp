@@ -1,11 +1,7 @@
 // components/PasswordGenerator.tsx
 "use client";
-import React, { useState } from "react";
-import { Input } from "@/components/ui/input";
+import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -13,14 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Copy, RefreshCw, Lock } from "lucide-react";
-import { DottedSeparator } from "@/components/dotted-separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { usePasswordStore } from "@/store/usePassword";
+import { Copy, RefreshCw } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import { useParams, usePathname } from "next/navigation";
-import path from "path";
 
 interface GeneratorOptions {
   length: number;
@@ -57,7 +55,7 @@ export default function PasswordGenerator() {
     let lower = LOWER;
     let upper = UPPER;
     let numbers = NUMBERS;
-    let symbols = SYMBOLS;
+    const symbols = SYMBOLS;
 
     if (!options.excludeLookAlikes) {
       lower = "abcdefghijklmnopqrstuvwxyz";
@@ -114,7 +112,7 @@ export default function PasswordGenerator() {
     key: keyof GeneratorOptions,
     value: number | boolean
   ) => {
-    setOptions((prev) => ({ ...prev, [key]: value as any }));
+    setOptions((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleUsePassword = () => {
@@ -128,15 +126,10 @@ export default function PasswordGenerator() {
 
   React.useEffect(() => {
     generateStrongPassword(options);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 
   return (
-    <Card
-      className={cn(
-        "w-full lg:w-[487px] md:w-[600px] border-none shadow-none "
-      )}
-    >
+    <Card className="w-full lg:w-[487px] md:w-[600px] border-none shadow-none ">
       <CardHeader className="flex flex-col items-center justify-center text-center p-7">
         <CardTitle className="flex items-center text-primary text-2xl">
           Strong Password Generator
@@ -231,7 +224,7 @@ export default function PasswordGenerator() {
             />
           </div>
           {pathname === "/sign-up" && (
-            <div className="flex mt-4">
+            <div className="flex mt-4 gap-2">
               <Button
                 onClick={handleUsePassword}
                 size={"lg"}

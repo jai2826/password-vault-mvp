@@ -3,7 +3,7 @@ import { SignUpCard } from "@/app/(auth)/_components/sign-up-card";
 import PasswordGenerator from "@/components/password-generator";
 import { getCurrentUser } from "@/routes/queries";
 import { redirect } from "next/navigation";
-
+export const dynamic = "force-dynamic";
 const SignUpPage = async () => {
   const user = await getCurrentUser();
   if (user) redirect("/");

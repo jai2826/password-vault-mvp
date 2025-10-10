@@ -1,10 +1,11 @@
 // models/User.ts
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 // Define the document interface
 export interface IItem extends Document {
+  user: mongoose.Types.ObjectId;
   title: string;
-  username: string;
+  email: string;
   password: string;
   url?: string;
   notes?: string;
@@ -13,24 +14,26 @@ export interface IItem extends Document {
 // Define the schema
 const ItemSchema: Schema<IItem> = new Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, "Item must belong to a user."],
+      ref: "User", // <-- Links this field to the 'User' model
+    },
     title: {
       type: String,
       required: [true, "Please provide a name."],
     },
-
-    username: {
+    email: {
       type: String,
       required: [true, "Please provide a username."],
       unique: true,
       lowercase: true,
       trim: true,
     },
-
     password: {
       type: String,
       required: [true, "Please provide a password."],
     },
-
     url: {
       type: String,
       required: false,

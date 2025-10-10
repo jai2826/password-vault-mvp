@@ -19,13 +19,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/routes/schemas";
 import Link from "next/link";
-import { usePasswordStore } from "@/store/usePassword";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 export const SignInCard = () => {
   const { mutate, isPending } = useLogin();
-  const generatedStrongPassword = usePasswordStore(
-    (state) => state.generatedStrongPassword
-  );
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -71,11 +71,27 @@ export const SignInCard = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="password"
-                      placeholder="Enter password"
-                    />
+                    <div className="relative ">
+                      <Input
+                        {...field}
+                        placeholder="Enter password"
+                        type={showPassword ? "text" : "password"}
+                        className="pr-10"
+                      />
+                      <Button
+                        type="button" // Important: Prevent button from submitting the form
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 opacity-50" />
+                        ) : (
+                          <Eye className="h-4 w-4 opacity-50" />
+                        )}
+                      </Button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

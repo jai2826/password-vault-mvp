@@ -1,5 +1,4 @@
-
-export const SECRET_KEY = process.env.NEXTAUTH_SECRET!;
+export const SECRET_KEY = process.env.NEXT_PUBLIC_NEXTAUTH_SECRET!;
 export const AUTH_COOKIE = "password-vault-auth-cookie";
 // export const DATABASES_ID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 // export const WORKSPACES_ID = process.env.NEXT_PUBLIC_APPWRITE_WORKSPACES_ID!;

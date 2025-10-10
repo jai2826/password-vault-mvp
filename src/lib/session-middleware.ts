@@ -15,6 +15,7 @@ type AdditionalContext = {
 // 3. Create the Hono middleware
 export const sessionMiddleware = createMiddleware<AdditionalContext>(
   async (c, next) => {
+    console.log("Check Middleware okay");
     // 1. Get the JWT from the cookie
     const token = getCookie(c, AUTH_COOKIE);
 

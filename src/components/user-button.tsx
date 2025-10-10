@@ -2,8 +2,6 @@
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-import { useCurrent } from "@/app/(auth)/_hooks/use-current";
-import { useLogout } from "@/app/(auth)/_hooks/use-logout";
 import { DottedSeparator } from "@/components/dotted-separator";
 import {
   DropdownMenu,
@@ -12,6 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Loader, LogOut } from "lucide-react";
+import { useCurrent } from "@/app/(auth)/_hooks/use-current";
+import { useLogout } from "@/app/(auth)/_hooks/use-logout";
 
 export const UserButton = () => {
   const { data: user, isLoading } = useCurrent();
@@ -39,7 +39,7 @@ export const UserButton = () => {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger className="outline-none relative">
         <Avatar className="size-10 hover:opacity-75 transition border border-neutral-300">
-          <AvatarFallback className="bg-neutral-200 font-medium text-neutral-500 flex items-center justify-center">
+          <AvatarFallback className="bg-gray-200 font-medium text-neutral-500 flex items-center justify-center">
             {avatarFallback}
           </AvatarFallback>
         </Avatar>

@@ -1,7 +1,7 @@
 import { SignInCard } from "@/app/(auth)/_components/sign-in-card";
 import { getCurrentUser } from "@/routes/queries";
 import { redirect } from "next/navigation";
-
+export const dynamic = 'force-dynamic';
 const SignInPage = async () => {
   const user = await getCurrentUser();
   if (user) redirect("/");
