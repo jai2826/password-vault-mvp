@@ -7,7 +7,7 @@ import { z } from "zod";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Button } from "@/components/ui/button";
 
-import { useRegister } from "@/app/(auth)/_hooks/use-register"
+import { useRegister } from "@/app/(auth)/_hooks/use-register";
 import {
   Card,
   CardContent,
