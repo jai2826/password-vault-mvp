@@ -32,10 +32,8 @@ import { useEffect, useState } from "react";
 export const SignUpCard = () => {
   const { mutate, isPending: isRegistering } = useRegister();
   const [showPassword, setShowPassword] = useState(false);
-  const generatedStrongPassword = usePasswordStore(
-    (state) => state.generatedStrongPassword
-  );
-  console.log(generatedStrongPassword);
+  const generatedStrongPassword =
+    usePasswordStore((state) => state.generatedStrongPassword) || "";
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -50,10 +48,10 @@ export const SignUpCard = () => {
   };
 
   useEffect(() => {
-    form.setValue("password", generatedStrongPassword, {
-      shouldValidate: true, // Optionally re-run validation
-      shouldDirty: true, // Mark the field as changed
-    });
+    form.setValue("password", generatedStrongPassword);
+    if (generatedStrongPassword) {
+      setShowPassword(true); // Show the password field if a password is generated
+    }
   }, [generatedStrongPassword, form]);
   return (
     <Card className="w-full md:w-[600px] lg:w-[487px] border-none shadow-none">
